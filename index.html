@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Backend Engineers Community — Kick-off Event</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Roboto:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --dark-blue: #052239;
+    --navy-blue: #182D82;
+    --light-gray: #EDEDED;
+    --sky-blue: #00B9F1;
+    --teal: #00C48C;
+    --gold: #FFA300;
+    --white: #FFFFFF;
+    --black: #1A1A1A;
+    --lilac: #4172B8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    width: 100%; height: 100%;
+    font-family: 'Roboto', Arial, sans-serif;
+    background: var(--dark-blue);
+    color: var(--black);
+    overflow: hidden;
+  }
+
+  /* ── DECK FRAME ── */
+  .deck {
+    position: fixed; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(0,185,241,0.06) 0%, transparent 45%),
+      radial-gradient(circle at 85% 80%, rgba(0,196,140,0.05) 0%, transparent 45%),
+      var(--dark-blue);
+  }
+
+  .stage {
+    position: relative;
+    width: min(96vw, calc(96vh * 16 / 9));
+    aspect-ratio: 16 / 9;
+    background: var(--white);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.45);
+    overflow: hidden;
+  }
+
+  .slide {
+    position: absolute; inset: 0;
+    display: none;
+    overflow: hidden;
+  }
+  .slide.active { display: block; }
+
+  /* ── COMMON SLIDE PADDING ── */
+  .slide-pad {
+    position: absolute; inset: 0;
+    padding: 56px 72px 64px;
+    display: flex; flex-direction: column;
+  }
+
+  .slide-eyebrow {
+    font-family: 'Lato', Arial, sans-serif; font-weight: 700;
+    color: var(--navy-blue); font-size: 12px;
+    letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 12px;
+  }
+  .slide-title {
+    font-family: 'Lato', Arial, sans-serif; font-weight: 900;
+    color: var(--dark-blue); font-size: 40px; line-height: 1.1;
+    margin-bottom: 12px;
+  }
+  .slide-title span { color: var(--navy-blue); }
+  .slide-lead {
+    color: #444; font-size: 16px; line-height: 1.6;
+    max-width: 880px; margin-bottom: 24px;
+  }
+
+  /* ── DARK SLIDE VARIANT ── */
+  .slide.dark .slide-pad { color: var(--white); }
+  .slide.dark { background: linear-gradient(135deg, var(--dark-blue) 0%, var(--navy-blue) 100%); }
+  .slide.dark .slide-eyebrow { color: var(--sky-blue); }
+  .slide.dark .slide-title { color: var(--white); }
+  .slide.dark .slide-title span { color: var(--sky-blue); }
+  .slide.dark .slide-lead { color: rgba(255,255,255,0.78); }
+
+  .slide.dark::before {
+    content: '';
+    position: absolute; top: -180px; right: -180px;
+    width: 540px; height: 540px;
+    background: radial-gradient(circle, rgba(0,185,241,0.18) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .slide.dark::after {
+    content: '';
+    position: absolute; bottom: -120px; left: 8%;
+    width: 360px; height: 360px;
+    background: radial-gradient(circle, rgba(0,196,140,0.10) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  /* ── TOP BAR (Aditi branding line, every slide) ── */
+  .topbar {
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--navy-blue) 0%, var(--sky-blue) 50%, var(--teal) 100%);
+    z-index: 5;
+  }
+
+  .brand-stamp {
+    position: absolute; top: 18px; right: 28px;
+    font-family: 'Lato', Arial, sans-serif; font-weight: 900;
+    font-size: 12px; letter-spacing: 0.8px;
+    color: var(--dark-blue); opacity: 0.7;
+    z-index: 5;
+  }
+  .brand-stamp span { color: var(--sky-blue); }
+  .slide.dark .brand-stamp { color: var(--white); opacity: 0.85; }
+
+  .slide-num {
+    position: absolute; bottom: 18px; right: 28px;
+    font-family: 'Lato', Arial, sans-serif; font-weight: 700;
+    font-size: 11px; letter-spacing: 1.5px;
+    color: var(--dark-blue); opacity: 0.55;
+    z-index: 5;
+  }
+  .slide.dark .slide-num { color: var(--white); opacity: 0.55; }
+
+  /* ── TITLE SLIDE ── */
+  #s1 .slide-pad {
+    justify-content: center; align-items: flex-start;
+    padding: 60px 80px;
+  }
+  .title-eyebrow {
+    font-family: 'Lato', Arial, sans-serif; font-weight: 700;
+    color: var(--sky-blue); font-size: 14px;
+    letter-spacing: 3.5px; text-transform: uppercase; margin-bottom: 22px;
+  }
+  .title-mainline {
+    font-family: 'Lato', Arial, sans-serif; font-weight: 900;
+    color: var(--white); font-size: 68px; line-height: 1.05;
+    margin-bottom: 18px; max-width: 980px;
+  }
+  .title-mainline span { color: var(--sky-blue); }
+  .title-sub {
+    color: rgba(255,255,255,0.78); font-size: 18px; line-height: 1.6;
+    max-width: 720px; margin-bottom: 40px;
+  }
+  .title-meta {
+    display: flex; gap: 42px; flex-wrap: wrap; margin-top: 14px;
+  }
+  .title-meta-item { display: flex; flex-direction: column; }
+  .title-meta-label {
+    font-family: 'Lato', Arial, sans-serif; font-weight: 700;
+    color: var(--sky-blue); font-size: 10px;
+    letter-spacing: 1.8px; text-transform: uppercase; margin-bottom: 4px;
+  }
+  .title-meta-value {
+    font-family: 'Lato', Arial, sans-serif; font-weight: 700;
+    color: var(--white); font-size: 14px;
+  }
+  .stack-badges {
+    display: flex; gap: 10px; margin-top: 36px; flex-wrap: wrap;
+  }
+  .stack-badge {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.22);
+    padding: 7px 18px;
+    font-family: 'Lato', Arial, sans-serif; font-weight: 700;
+    font-size: 12px; color: var(--white);
+    letter-spacing: 0.5px; border-radius: 2px;
+  }
+  .stack-badge.java { border-color: var(--gold); color: var(--gold); }
+  .stack-badge.python { border-color: var(--teal); color: var(--teal); }
+  .stack-badge.dotnet { border-color: var(--sky-blue); color: var(--sky-blue); }
+  .stack-badge.cross { border-color: rgba(255,255,255,0.6); color: var(--white); }
+
+  /* ── AGENDA ── */
+  .agenda-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 14px 28px; margin-top: 8px;
+  }
+  .agenda-item {
+    display: flex; gap: 14px; align-items: flex-start;
+    padding: 14px 18px; background: var(--light-gray);
+    border-left: 3px solid var(--navy-blue);
+  }
+  .agenda-num {
+    font-family: 'Lato', Arial, sans-serif; font-weight: 900;
+    font-size: 22px; color: var(--navy-blue); min-width: 32px;
+  }
+  .agenda-text {
+    font-size: 14px; color: var(--dark-blue); line-height: 1.45;
+    font-weight: 500;
+  }
+  .agenda-text small {
+    display: block; color: #777; font-weight: 400;
+    font-size: 11px; margin-top: 2px; letter-spacing: 0.4px;
+  }
+
+  /* ── VISION / MISSION VALUES ── */
+  .pillar-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 22px; margin-top: 4px;
+  }
+  .pillar {
+    padding: 22px 22px 24px;
+    background: var(--white);
+    border-top: 4px solid var(--navy-blue);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  }
+  .pillar.p2 { border-top-color: var(--sky-blue); }
+  .pillar.p3 { border-top-color: var(--teal); }
+  .pillar-label {
+    font-family: 'Lato', Arial, sans-serif; font-weight: 700;
+    color: var(--navy-blue); font-size: 11px;
+    letter-spacing: 1.8px; text-transform: uppercase; margin-bottom: 8px;
+  }
+  .pillar.p2 .pillar-label { color: var(--sky-blue); }
+  .pillar.p3 .pillar-label { color: var(--teal); }
+  .pillar-title {
+    font-family: 'Lato', Arial, sans-serif; font-weight: 900;
+    color: var(--dark-blue); font-size: 22px; margin-bottom: 10px;
+  }
+  .pillar-body {
+    color: #444; font-size: 14px; line-height: 1.6;
+  }
+
+  /* ── ROADMAP / PHASES ── */
+  .phase-row {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 16px; margin-top: 8px;
+  }
+  .phase-card {
+    background: var(--light-gray);
+    border-top: 4px solid var(--navy-blue);
+    padding: 20px 18px;
+    position: relative;
+  }
+  .phase-card.p2 { border-top-color: var(--sky-blue); }
+  .phase-card.p3 { border-top-color: var(--teal); }
+  .phase-card.p4 { border-top-color: var(--gold); }
+  .phase-num {
+    font-family: 'Lato', Arial, sans-serif; font-weight: 900;
+    font-size: 32px; color: rgba(5,34,57,0.10); line-height: 1;
+    margin-bottom: 6px;
+  }
+  .phase-name {
+    font-family: 'Lato', Arial, sans-serif; font-weight: 900;
+    color: var(--dark-blue); font-size: 16px; margin-bottom: 4px;
+  }
+  .phase-dates {
+    font-size: 11px; color: var(--navy-blue); font-weight: 700;
+    margin-bottom: 12px; letter-spacing: 0.5px;
+    font-family: 'Lato', Arial, sans-serif;
+  }
+  .phase-goal {
+    font-size: 12px; color: #444; line-height: 1.55;
+  }
+
+  /* ── MILESTONES (90 days) ── */
+  .timeline {
+    position: relative; padding-left: 30px; margin-top: 8px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute; left: 8px; top: 6px; bottom: 6px;
+    width: 2px;
+    background: linear-gradient(180deg, var(--navy-blue) 0%, var(--sky-blue) 60%, var(--teal) 100%);
+  }
+  .tl-item {
+    position: relative; padding: 10px 0 14px 18px;
+  }
+  .tl-item::before {
+    content: '';
+    position: absolute; left: -27px; top: 14px;
+    width: 14px; height: 14px;
+    background: var(--gold);
+    border: 3px solid var(--white);
+    box-shadow: 0 0 0 2px var(--gold);
+    border-radius: 50%;
+  }
+  .tl-date {
+    font-family: 'Lato', Arial, sans-serif; font-weight: 700;
+    color: var(--navy-blue); font-size: 12px;
+    letter-spacing: 1px; text-transform: uppercase;
+  }
+  .tl-text {
+    color: var(--dark-blue); font-size: 14px; margin-top: 3px;
+    line-height: 1.5;
+  }
+
+  /* ── CHANNELS / TWO-COL ── */
+  .two-col {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 28px; margin-top: 4px;
+  }
+  .channel-list {
+    list-style: none; display: flex; flex-direction: column; gap: 10px;
+  }
+  .channel-item {
+    display: flex; gap: 12px; align-items: center;
+    padding: 12px 14px;
+    background: var(--light-gray);
+    border-left: 3px solid var(--sky-blue);
+  }
+  .channel-tag {
+    font-family: 'Lato', Arial, sans-serif; font-weight: 900;
+    color: var(--navy-blue); font-size: 13px; min-width: 200px;
+  }
+  .channel-desc { color: #444; font-size: 13px; }
+
+  /* ── ROLES ── */
+  .role-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 16px; margin-top: 4px;
+  }
+  .role {
+    padding: 16px 18px;
+    background: var(--white);
+    border: 1px solid var(--light-gray);
+    border-left: 4px solid var(--navy-blue);
+  }
+  .role.r2 { border-left-color: var(--sky-blue); }
+  .role.r3 { border-left-color: var(--teal); }
+  .role.r4 { border-left-color: var(--gold); }
+  .role-name {
+    font-family: 'Lato', Arial, sans-serif; font-weight: 900;
+    color: var(--dark-blue); font-size: 15px; margin-bottom: 4px;
+  }
+  .role-desc {
+    color: #555; font-size: 13px; line-height: 1.5;
+  }
+  .role-time {
+    color: var(--navy-blue); font-size: 11px; margin-top: 6px;
+    font-weight: 700; letter-spacing: 0.4px;
+    font-family: 'Lato', Arial, sans-serif; text-transform: uppercase;
+  }
+
+  /* ── GEMMA SLIDES — DATA TABLES & STATS ── */
+  .stat-strip {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 16px; margin: 16px 0 14px;
+  }
+  .stat-card {
+    padding: 16px 16px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-left: 3px solid var(--sky-blue);
+  }
+  .slide.light .stat-card {
+    background: var(--light-gray);
+    border: 1px solid #ddd;
+    border-left: 3px solid var(--navy-blue);
+  }
+  .stat-card.gold { border-left-color: var(--gold); }
+  .stat-card.teal { border-left-color: var(--teal); }
+  .stat-card.sky { border-left-color: var(--sky-blue); }
+  .stat-num {
+    font-family: 'Lato', Arial, sans-serif; font-weight: 900;
+    font-size: 28px; color: var(--white); line-height: 1.1;
+  }
+  .slide.light .stat-num { color: var(--dark-blue); }
+  .stat-card.gold .stat-num { color: var(--gold); }
+  .stat-card.teal .stat-num { color: var(--teal); }
+  .stat-card.sky .stat-num { color: var(--sky-blue); }
+  .stat-label {
+    font-family: 'Lato', Arial, sans-serif; font-weight: 700;
+    font-size: 10px; letter-spacing: 1.4px; text-transform: uppercase;
+    margin-top: 6px;
+    color: rgba(255,255,255,0.65);
+  }
+  .slide.light .stat-label { color: #666; }
+
+  .data-table {
+    width: 100%; border-collapse: collapse; margin-top: 10px;
+    background: rgba(255,255,255,0.04);
+  }
+  .data-table th {
+    background: rgba(255,255,255,0.10);
+    color: rgba(255,255,255,0.85);
+    font-family: 'Lato', Arial, sans-serif; font-weight: 700;
+    font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+    padding: 10px 14px; text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.18);
+  }
+  .data-table td {
+    padding: 9px 14px; font-size: 13px; color: rgba(255,255,255,0.88);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    line-height: 1.4;
+  }
+  .data-table tr:hover td { background: rgba(255,255,255,0.04); }
+
+  .light .data-table { background: var(--white); }
+  .light .data-table th { background: var(--dark-blue); color: var(--white); border-bottom: none; }
+  .light .data-table td { color: var(--black); border-bottom: 1px solid var(--light-gray); }
+  .light .data-table tr:hover td { background: var(--light-gray); }
+
+  .badge {
+    display: inline-block; padding: 3px 9px; border-radius: 2px;
+    font-family: 'Lato', Arial, sans-serif; font-weight: 700;
+    font-size: 10px; letter-spacing: 0.5px; text-transform: uppercase;
+  }
+  .badge.green { background: rgba(0,196,140,0.18); color: var(--teal); }
+  .badge.amber { background: rgba(255,163,0,0.20); color: var(--gold); }
+  .badge.red { background: rgba(220,53,69,0.20); color: #e36b78; }
+  .light .badge.green { background: rgba(0,196,140,0.14); color: #007a57; }
+  .light .badge.amber { background: rgba(255,163,0,0.18); color: #b07000; }
+  .light .badge.red { background: rgba(220,53,69,0.12); color: #c0392b; }
+
+  /* ── SCOPE DIAGRAM (gemma slide 1) ── */
+  .scope-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 18px; margin-top: 8px;
+  }
+  .scope-block {
+    padding: 16px 18px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.14);
+  }
+  .scope-tag {
+    font-family: 'Lato', Arial, sans-serif; font-weight: 700;
+    color: var(--sky-blue); font-size: 10px;
+    letter-spacing: 1.6px; text-transform: uppercase; margin-bottom: 8px;
+  }
+  .scope-block.t2 .scope-tag { color: var(--teal); }
+  .scope-block.t3 .scope-tag { color: var(--gold); }
+  .scope-name {
+    font-family: 'Lato', Arial, sans-serif; font-weight: 900;
+    color: var(--white); font-size: 17px; margin-bottom: 8px;
+  }
+  .scope-list {
+    list-style: none; padding: 0; margin: 0;
+  }
+  .scope-list li {
+    color: rgba(255,255,255,0.80); font-size: 12px; line-height: 1.5;
+    padding: 3px 0 3px 16px; position: relative;
+  }
+  .scope-list li::before {
+    content: ''; position: absolute; left: 0; top: 9px;
+    width: 6px; height: 6px; background: var(--sky-blue);
+    transform: rotate(45deg);
+  }
+  .scope-block.t2 .scope-list li::before { background: var(--teal); }
+  .scope-block.t3 .scope-list li::before { background: var(--gold); }
+
+  /* ── WHY THIS MATTERS CALLOUT ── */
+  .why-matters {
+    margin-top: 14px;
+    padding: 14px 20px;
+    background: rgba(0,185,241,0.08);
+    border-left: 4px solid var(--sky-blue);
+    display: flex; gap: 24px; align-items: flex-start;
+  }
+  .why-matters-label {
+    font-family: 'Lato', Arial, sans-serif; font-weight: 900;
+    color: var(--sky-blue); font-size: 11px;
+    letter-spacing: 2px; text-transform: uppercase;
+    white-space: nowrap; padding-top: 2px;
+  }
+  .why-matters-items {
+    display: flex; gap: 28px; flex-wrap: wrap;
+  }
+  .why-matters-item {
+    color: rgba(255,255,255,0.90); font-size: 13px; line-height: 1.5;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .why-matters-item::before {
+    content: '';
+    display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--sky-blue); flex-shrink: 0;
+  }
+
+  /* ── IMPACT CALLOUTS ── */
+  .recos {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;
+    margin-top: 14px;
+  }
+  .reco {
+    padding: 16px 18px;
+    background: rgba(255,255,255,0.06);
+    border-left: 3px solid var(--sky-blue);
+  }
+  .reco.go { border-left-color: var(--teal); }
+  .reco.hold { border-left-color: var(--gold); }
+  .reco.nogo { border-left-color: #e36b78; }
+  .reco-tag {
+    font-family: 'Lato', Arial, sans-serif; font-weight: 900;
+    color: var(--sky-blue); font-size: 11px;
+    letter-spacing: 1.6px; text-transform: uppercase; margin-bottom: 6px;
+  }
+  .reco.go .reco-tag { color: var(--teal); }
+  .reco.hold .reco-tag { color: var(--gold); }
+  .reco.nogo .reco-tag { color: #e36b78; }
+  .reco-title {
+    font-family: 'Lato', Arial, sans-serif; font-weight: 700;
+    color: var(--white); font-size: 14px; margin-bottom: 8px;
+    line-height: 1.35;
+  }
+  .reco-body {
+    color: rgba(255,255,255,0.78); font-size: 12px; line-height: 1.5;
+  }
+
+  /* ── COST CARD (slide 11) ── */
+  .cost-card {
+    margin-top: 14px;
+    padding: 14px 20px;
+    background: rgba(0,196,140,0.07);
+    border-left: 3px solid var(--teal);
+    display: flex; gap: 24px; align-items: flex-start;
+  }
+  .cost-card-body { flex: 1; }
+  .cost-card-subtitle {
+    color: rgba(255,255,255,0.88); font-size: 13px; line-height: 1.5;
+    margin-bottom: 12px;
+  }
+  .cost-mini-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    width: fit-content;
+    border: 1px solid rgba(255,255,255,0.14);
+  }
+  .cost-mini-grid .cm-head {
+    background: rgba(255,255,255,0.10);
+    font-family: 'Lato', Arial, sans-serif; font-weight: 700;
+    color: var(--white); font-size: 10px;
+    letter-spacing: 1.2px; text-transform: uppercase;
+    padding: 6px 20px; border-bottom: 1px solid rgba(255,255,255,0.14);
+  }
+  .cost-mini-grid .cm-head:first-child { border-right: 1px solid rgba(255,255,255,0.14); }
+  .cost-mini-grid .cm-cell {
+    color: rgba(255,255,255,0.80); font-size: 12px;
+    padding: 5px 20px; border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .cost-mini-grid .cm-cell:nth-child(odd) { border-right: 1px solid rgba(255,255,255,0.07); }
+  .cost-mini-grid .cm-last { border-bottom: none; }
+  .cost-mini-grid .cm-cell.low  { color: var(--teal); font-weight: 700; }
+  .cost-mini-grid .cm-cell.med  { color: var(--gold); font-weight: 700; }
+  .cost-mini-grid .cm-cell.high { color: #e36b78;    font-weight: 700; }
+
+  /* ── OKR SLIDE ── */
+  .okr-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 18px; margin-top: 4px;
+  }
+  .okr-card {
+    background: var(--white);
+    border-top: 4px solid var(--navy-blue);
+    padding: 18px 20px 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  }
+  .okr-card.o2 { border-top-color: var(--sky-blue); }
+  .okr-card.o3 { border-top-color: var(--teal); }
+  .okr-card.o4 { border-top-color: var(--gold); }
+  .okr-objective {
+    font-family: 'Lato', Arial, sans-serif; font-weight: 900;
+    color: var(--dark-blue); font-size: 14px;
+    line-height: 1.35; margin-bottom: 12px;
+  }
+  .kr-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .kr-row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 6px 10px; background: var(--light-gray);
+    font-size: 12px; color: var(--dark-blue);
+  }
+  .kr-row .kr-target {
+    font-family: 'Lato', Arial, sans-serif; font-weight: 900;
+    color: var(--navy-blue); font-size: 13px;
+  }
+
+  /* ── CTA / CLOSING ── */
+  #s17 .slide-pad, #s18 .slide-pad {
+    justify-content: center;
+  }
+  .cta-headline {
+    font-family: 'Lato', Arial, sans-serif; font-weight: 900;
+    color: var(--white); font-size: 56px; line-height: 1.05;
+    margin-bottom: 20px; max-width: 1000px;
+  }
+  .cta-headline span { color: var(--sky-blue); }
+  .cta-sub {
+    color: rgba(255,255,255,0.78); font-size: 18px; line-height: 1.6;
+    max-width: 760px; margin-bottom: 36px;
+  }
+  .cta-actions {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 16px; max-width: 1000px;
+  }
+  .cta-action {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-top: 3px solid var(--sky-blue);
+    padding: 18px 20px;
+  }
+  .cta-action.a2 { border-top-color: var(--teal); }
+  .cta-action.a3 { border-top-color: var(--gold); }
+  .cta-step {
+    font-family: 'Lato', Arial, sans-serif; font-weight: 900;
+    color: var(--sky-blue); font-size: 11px;
+    letter-spacing: 1.6px; text-transform: uppercase; margin-bottom: 6px;
+  }
+  .cta-action.a2 .cta-step { color: var(--teal); }
+  .cta-action.a3 .cta-step { color: var(--gold); }
+  .cta-action-title {
+    font-family: 'Lato', Arial, sans-serif; font-weight: 700;
+    color: var(--white); font-size: 15px; margin-bottom: 6px;
+    line-height: 1.35;
+  }
+  .cta-action-body {
+    color: rgba(255,255,255,0.78); font-size: 12px; line-height: 1.5;
+  }
+
+  .closing-stamp {
+    font-family: 'Lato', Arial, sans-serif; font-weight: 900;
+    font-size: 22px; color: var(--white); margin-top: 28px;
+  }
+  .closing-stamp span { color: var(--sky-blue); }
+  .closing-meta {
+    color: rgba(255,255,255,0.55); font-size: 12px; margin-top: 8px;
+    font-family: 'Roboto', Arial, sans-serif;
+  }
+
+  /* ── CONTROLS ── */
+  .controls {
+    position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
+    z-index: 50;
+    display: flex; align-items: center; gap: 14px;
+    background: rgba(0,0,0,0.55);
+    padding: 8px 16px; border-radius: 30px;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.10);
+  }
+  .ctrl-btn {
+    background: transparent; border: 1px solid rgba(255,255,255,0.25);
+    color: var(--white);
+    width: 32px; height: 32px; border-radius: 50%;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    font-family: 'Lato', Arial, sans-serif; font-weight: 900;
+    font-size: 14px;
+    transition: background 0.2s, border 0.2s;
+  }
+  .ctrl-btn:hover { background: rgba(255,255,255,0.10); border-color: var(--sky-blue); }
+  .ctrl-counter {
+    color: var(--white); font-family: 'Lato', Arial, sans-serif; font-weight: 700;
+    font-size: 12px; letter-spacing: 0.8px; min-width: 70px; text-align: center;
+  }
+  .ctrl-counter span { color: var(--sky-blue); }
+
+  /* ── HINT (first load) ── */
+  .hint {
+    position: fixed; top: 18px; left: 50%; transform: translateX(-50%);
+    background: rgba(0,0,0,0.55);
+    color: rgba(255,255,255,0.85);
+    padding: 8px 18px; border-radius: 20px;
+    font-family: 'Lato', Arial, sans-serif; font-weight: 700;
+    font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+    z-index: 60;
+    border: 1px solid rgba(255,255,255,0.10);
+    transition: opacity 0.6s ease;
+  }
+  .hint.fade { opacity: 0; pointer-events: none; }
+
+  /* ── PRINT (so the deck can be saved as PDF) ── */
+  @media print {
+    html, body { background: var(--white); overflow: visible; height: auto; width: auto; }
+    .deck { position: static; display: block; background: var(--white); }
+    .stage { width: 100vw; height: auto; box-shadow: none; }
+    .controls, .hint { display: none !important; }
+    .slide {
+      display: block !important;
+      position: relative !important;
+      page-break-after: always;
+      width: 100vw; aspect-ratio: 16 / 9;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="hint" id="hint">Use Arrow Keys or the controls below to navigate</div>
+
+<div class="deck">
+  <div class="stage" id="stage">
+
+    <!-- ============ SLIDE 1 — TITLE ============ -->
+    <section class="slide dark active" id="s1">
+      <div class="topbar"></div>
+      <div class="brand-stamp">Aditi <span>Consulting</span></div>
+      <div class="slide-pad">
+        <div class="title-eyebrow">Engineering Community · Kick-off Event</div>
+        <h1 class="title-mainline">Backend Engineers<br/><span>Community</span> — We Are Live</h1>
+        <p class="title-sub">
+          A 60-minute introduction to our cross-stack backend community: vision, core team, the year ahead, and how every engineer can plug in starting today.
+        </p>
+        <div class="title-meta">
+          <div class="title-meta-item">
+            <span class="title-meta-label">Date</span>
+            <span class="title-meta-value">June 5, 2026</span>
+          </div>
+          <div class="title-meta-item">
+            <span class="title-meta-label">Hosts</span>
+            <span class="title-meta-value">Wilmer Contreras · Agustin Salesses</span>
+          </div>
+          <div class="title-meta-item">
+            <span class="title-meta-label">Audience</span>
+            <span class="title-meta-value">All Backend Engineers</span>
+          </div>
+          <div class="title-meta-item">
+            <span class="title-meta-label">Format</span>
+            <span class="title-meta-value">Recorded · 60 minutes</span>
+          </div>
+        </div>
+        <div class="stack-badges">
+          <span class="stack-badge java">Java Spring Boot</span>
+          <span class="stack-badge python">Python</span>
+          <span class="stack-badge dotnet">.NET</span>
+          <span class="stack-badge cross">Cross-Stack</span>
+        </div>
+      </div>
+      <div class="slide-num">01</div>
+    </section>
+
+    <!-- ============ SLIDE 2 — AGENDA ============ -->
+    <section class="slide light" id="s2">
+      <div class="topbar"></div>
+      <div class="brand-stamp">Aditi <span>Consulting</span></div>
+      <div class="slide-pad">
+        <div class="slide-eyebrow">Today's Session</div>
+        <h2 class="slide-title">Agenda</h2>
+        <p class="slide-lead">A focused 60 minutes designed to align everyone on what we are building together and how to participate from day one.</p>
+        <div class="agenda-grid">
+          <div class="agenda-item"><div class="agenda-num">01</div><div class="agenda-text">Why a Backend Community<small>The problem we are solving — 5 min</small></div></div>
+          <div class="agenda-item"><div class="agenda-num">02</div><div class="agenda-text">Mission, Values, and Charter<small>What we stand for — 5 min</small></div></div>
+          <div class="agenda-item"><div class="agenda-num">03</div><div class="agenda-text">The Core Team and Chapter Leads<small>Who is steering this — 5 min</small></div></div>
+          <div class="agenda-item"><div class="agenda-num">04</div><div class="agenda-text">Year-1 Roadmap Overview<small>The four phases ahead — 10 min</small></div></div>
+          <div class="agenda-item"><div class="agenda-num">05</div><div class="agenda-text">Spotlight: Gemma 4 Local Exercise<small>Recent cross-team learning — 10 min</small></div></div>
+          <div class="agenda-item"><div class="agenda-num">06</div><div class="agenda-text">Channels, Roles, and Next Steps<small>How to plug in this week — 10 min</small></div></div>
+          <div class="agenda-item"><div class="agenda-num">07</div><div class="agenda-text">OKRs and Recognition<small>How we measure success — 5 min</small></div></div>
+          <div class="agenda-item"><div class="agenda-num">08</div><div class="agenda-text">Q&amp;A and Closing<small>Open mic — 10 min</small></div></div>
+        </div>
+      </div>
+      <div class="slide-num">02</div>
+    </section>
+
+    <!-- ============ SLIDE 3 — WHY ============ -->
+    <section class="slide dark" id="s3">
+      <div class="topbar"></div>
+      <div class="brand-stamp">Aditi <span>Consulting</span></div>
+      <div class="slide-pad">
+        <div class="slide-eyebrow">Why Now</div>
+        <h2 class="slide-title">Three stacks. <span>One backend engineering culture.</span></h2>
+        <p class="slide-lead">
+          Backend engineering at Aditi is split across Java Spring Boot, Python, and .NET teams, each with strong individual practices but limited shared muscle. The same problems keep getting solved three times. The same lessons keep being learned three times. A community is the lowest-cost way to fix that.
+        </p>
+        <div class="pillar-grid" style="margin-top: 14px;">
+          <div class="pillar">
+            <div class="pillar-label">Break Silos</div>
+            <div class="pillar-title">Shared knowledge</div>
+            <div class="pillar-body">A single forum where Java, Python, and .NET engineers ask questions, share patterns, and learn from each other's clients and projects.</div>
+          </div>
+          <div class="pillar p2">
+            <div class="pillar-label">Accelerate</div>
+            <div class="pillar-title">Faster onboarding</div>
+            <div class="pillar-body">Cross-stack standards, project templates, and a library of recordings reduce the time from "joined the team" to "shipping with confidence."</div>
+          </div>
+          <div class="pillar p3">
+            <div class="pillar-label">Measurable</div>
+            <div class="pillar-title">Client impact</div>
+            <div class="pillar-body">PoCs, and inner-source contributions translate community work into capabilities clients can buy and outcomes leadership can measure.</div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-num">03</div>
+    </section>
+
+    <!-- ============ SLIDE 4 — MISSION & VALUES ============ -->
+    <section class="slide light" id="s4">
+      <div class="topbar"></div>
+      <div class="brand-stamp">Aditi <span>Consulting</span></div>
+      <div class="slide-pad">
+        <div class="slide-eyebrow">Charter v1.0</div>
+        <h2 class="slide-title">Our mission, and how we will operate</h2>
+        <p class="slide-lead">
+          <strong>Mission:</strong> Foster cohesion, promote continuous learning, and drive technical innovation across Java Spring Boot, Python, and .NET engineers — building a digital world with human spirit.
+        </p>
+        <div class="pillar-grid">
+          <div class="pillar">
+            <div class="pillar-label">Value 01</div>
+            <div class="pillar-title">Be respectful</div>
+            <div class="pillar-body">Across all stacks and seniority levels. No question is too basic, no topic too advanced. Disagreement is welcome; condescension is not.</div>
+          </div>
+          <div class="pillar p2">
+            <div class="pillar-label">Value 02</div>
+            <div class="pillar-title">Share generously</div>
+            <div class="pillar-body">Wins, failures, and half-formed ideas. Attribute work and give credit. The community gets stronger every time someone teaches what they just learned.</div>
+          </div>
+          <div class="pillar p3">
+            <div class="pillar-label">Value 03</div>
+            <div class="pillar-title">Decide in the open</div>
+            <div class="pillar-body">RFCs, async votes, and recorded sessions. Day-to-day calls by Core Team consensus; technical standards by community RFC review.</div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-num">04</div>
+    </section>
+
+    <!-- ============ SLIDE 5 — CORE TEAM ============ -->
+    <section class="slide dark" id="s5">
+      <div class="topbar"></div>
+      <div class="brand-stamp">Aditi <span>Consulting</span></div>
+      <div class="slide-pad">
+        <div class="slide-eyebrow">People</div>
+        <h2 class="slide-title">Meet the <span>Core Team</span> and Chapter Leads</h2>
+        <p class="slide-lead">A small steering group is responsible for strategy, coordination, and measurement. Chapter Leads own the stack-specific tracks. All roles rotate annually.</p>
+        <div class="role-grid" style="margin-top: 8px;">
+          <div class="role">
+            <div class="role-name">Executive Sponsor</div>
+            <div class="role-desc">Provides organizational air cover, budget approval, and the escalation path. Makes sure the community has the time and resources it needs to succeed.</div>
+            <div class="role-time">2 hours per month</div>
+          </div>
+          <div class="role r2">
+            <div class="role-name">Community Core Team — 3 to 5 engineers</div>
+            <div class="role-desc">Drives strategy, coordinates events, owns the calendar, and publishes the health metrics. The day-to-day operating engine of the community.</div>
+            <div class="role-time">2 to 4 hours per week</div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-num">05</div>
+    </section>
+
+    <!-- ============ SLIDE 6 — ROADMAP OVERVIEW ============ -->
+    <section class="slide light" id="s6">
+      <div class="topbar"></div>
+      <div class="brand-stamp">Aditi <span>Consulting</span></div>
+      <div class="slide-pad">
+        <div class="slide-eyebrow">12-Month Plan</div>
+        <h2 class="slide-title">Year-1 Roadmap — four phases</h2>
+        <p class="slide-lead">A phased plan to launch, activate, scale, and sustain the community. Each phase has explicit deliverables, owners, and success criteria.</p>
+        <div class="phase-row">
+          <div class="phase-card">
+            <div class="phase-num">01</div>
+            <div class="phase-name">Foundation</div>
+            <div class="phase-dates">May – Jun 2026</div>
+            <div class="phase-goal">Form the core team, run the baseline survey, set up channels, hold the kick-off, and run first chapter meetings.</div>
+          </div>
+          <div class="phase-card p2">
+            <div class="phase-num">02</div>
+            <div class="phase-name">Activation</div>
+            <div class="phase-dates">Jul – Sep 2026</div>
+            <div class="phase-goal">Explore community interest options and establish a regular rhythm: monthly tech talks, weekly TILs and the first community-driven RFC cycles.</div>
+          </div>
+          <div class="phase-card p3">
+            <div class="phase-num">03</div>
+            <div class="phase-name">Scaling</div>
+            <div class="phase-dates">Oct 2026 – Jan 2027</div>
+            <div class="phase-goal">Publish Engineering Standards v1, launch the mentoring program, and ship the Internal Developer Portal v1.</div>
+          </div>
+          <div class="phase-card p4">
+            <div class="phase-num">04</div>
+            <div class="phase-name">Sustainability</div>
+            <div class="phase-dates">Feb – Apr 2027</div>
+            <div class="phase-goal">Run the community health review, rotate core team seats and launch the Recognition Program.</div>
+          </div>
+        </div>
+        <p class="slide-lead" style="margin-top: 18px;">Today we are at the entry point of <strong>Phase 1 — Foundation</strong>. The next ninety days set the tone for the year.</p>
+      </div>
+      <div class="slide-num">06</div>
+    </section>
+
+    <!-- ============ SLIDE 7 — FIRST 90 DAYS ============ -->
+    <section class="slide light" id="s7">
+      <div class="topbar"></div>
+      <div class="brand-stamp">Aditi <span>Consulting</span></div>
+      <div class="slide-pad">
+        <div class="slide-eyebrow">First 90 Days</div>
+        <h2 class="slide-title">From kick-off to first <span>cross-stack rhythm</span></h2>
+        <p class="slide-lead">A small set of milestones we will measure ourselves against between today and the end of August.</p>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-date">June 5, 2026 — Today</div>
+            <div class="tl-text">Kick-off Event. Vision shared, core team introduced, charter pinned in all channels, baseline survey open to every backend engineer.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-date">Week of June 30, 2026</div>
+            <div class="tl-text">First chapter meetings — Java, Python, and .NET in the same week. First Tech Talk on a high-visibility cross-stack topic.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-date">Late July 2026</div>
+            <div class="tl-text">First community RFC opens for review. First "hot take" async poll posted in the community channel.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-date">August 25, 2026</div>
+            <div class="tl-text">Second RFC topic nominated by the community.</div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-num">07</div>
+    </section>
+
+    <!-- ============ SLIDE 8 — CHANNELS ============ -->
+    <section class="slide light" id="s8">
+      <div class="topbar"></div>
+      <div class="brand-stamp">Aditi <span>Consulting</span></div>
+      <div class="slide-pad">
+        <div class="slide-eyebrow">Where We Talk</div>
+        <h2 class="slide-title">Channels and rhythms</h2>
+        <p class="slide-lead">Async-first, recorded by default. Every event has a written summary so you can keep up without attending live.</p>
+        <div class="two-col">
+          <div>
+            <ul class="channel-list">
+              <li class="channel-item"><div class="channel-tag">#backend-community</div><div class="channel-desc">All-stack announcements, TILs, polls, questions, patterns, RFCs, tooling.</div></li>
+            </ul>
+          </div>
+          <div>
+            <div class="role">
+              <div class="role-name">Monthly Tech Talk</div>
+              <div class="role-desc">45-minute sessions, alternating stack-specific and cross-stack topics. Recorded and posted with a written summary.</div>
+              <div class="role-time">Monthly</div>
+            </div>
+            <div class="role r3" style="margin-top: 12px;">
+              <div class="role-name">Today I Learned (TIL) and Hot Takes</div>
+              <div class="role-desc">Weekly sentence learning from your day-to-day. Monthly debatable polls to spark engagement.</div>
+              <div class="role-time">Weekly / Monthly</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-num">08</div>
+    </section>
+
+    <!-- ============ SLIDE 9 — GEMMA SCOPE ============ -->
+    <section class="slide dark" id="s9">
+      <div class="topbar"></div>
+      <div class="brand-stamp">Aditi <span>Consulting</span></div>
+      <div class="slide-pad">
+        <div class="slide-eyebrow">Spotlight · Recent Cross-Team Exercise — 1 of 3</div>
+        <h2 class="slide-title">Gemma 4 Local POC — <span>scope of the tests</span></h2>
+        <p class="slide-lead">
+          Between April 7 and 30, 2026, several Aditi engineers across Java, Python, and .NET backgrounds conducted a structured exploratory assessment of <strong>Google DeepMind's Gemma 4</strong> under realistic developer and workstation constraints. The goal: take a fast, hands-on read on whether a locally hosted open LLM is a credible building block for client work.
+        </p>
+
+        <div class="stat-strip" style="grid-template-columns: repeat(4, 1fr);">
+          <div class="stat-card sky"><div class="stat-num">7</div><div class="stat-label">Engineers participating</div></div>
+          <div class="stat-card teal"><div class="stat-num">12</div><div class="stat-label">Structured practices</div></div>
+          <div class="stat-card gold"><div class="stat-num">3</div><div class="stat-label">Runtimes compared</div></div>
+          <div class="stat-card sky"><div class="stat-num">5</div><div class="stat-label">Hardware profiles</div></div>
+        </div>
+
+        <div class="scope-grid" style="margin-top: 4px;">
+          <div class="scope-block">
+            <div class="scope-tag">Track 01 — Infrastructure</div>
+            <div class="scope-name">Set up and run locally</div>
+            <ul class="scope-list">
+              <li>Ollama, llama.cpp, Hugging Face Transformers, LM Studio</li>
+              <li>CPU-only, integrated GPU, RTX 3060, RTX 3060 Ti</li>
+              <li>Model variants: Gemma 4 E2B-it, E4B-it, 31B</li>
+            </ul>
+          </div>
+          <div class="scope-block t2">
+            <div class="scope-tag">Track 02 — Capability</div>
+            <div class="scope-name">What can it actually do</div>
+            <ul class="scope-list">
+              <li>Multi-turn chat, persona prompting, structured JSON</li>
+              <li>Coding assistance and IDE integration via Continue</li>
+              <li>Multimodal: image, audio, video reasoning</li>
+              <li>Agentic workflows and parallel tool calls</li>
+              <li>Multilingual quality across 5 languages</li>
+            </ul>
+          </div>
+          <div class="scope-block t3">
+            <div class="scope-tag">Track 03 — Frontier</div>
+            <div class="scope-name">Stress and failure boundaries</div>
+            <ul class="scope-list">
+              <li>Long context: 5K, 20K, 50K, and 100K token tiers</li>
+              <li>Thinking-mode latency cost</li>
+              <li>QLoRA fine-tuning on consumer GPUs</li>
+              <li>Hallucination on technical and structured outputs</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="why-matters">
+          <div class="why-matters-label">Why This Matters?</div>
+          <div class="why-matters-items">
+            <div class="why-matters-item">Lower AI operating cost</div>
+            <div class="why-matters-item">Reduced external API dependency</div>
+            <div class="why-matters-item">Data residency control</div>
+            <div class="why-matters-item">Secure client-side AI enablement</div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-num">09</div>
+    </section>
+
+    <!-- ============ SLIDE 10 — GEMMA RESULTS ============ -->
+    <section class="slide dark" id="s10">
+      <div class="topbar"></div>
+      <div class="brand-stamp">Aditi <span>Consulting</span></div>
+      <div class="slide-pad">
+        <div class="slide-eyebrow">Spotlight · Recent Cross-Team Exercise — 2 of 3</div>
+        <h2 class="slide-title">Gemma 4 Local POC — <span>results and data</span></h2>
+        <p class="slide-lead">Numbers that come straight from the engineers' run logs. Quantization and the runtime choice mattered far more than expected.</p>
+
+        <div class="stat-strip">
+          <div class="stat-card sky"><div class="stat-num">9 – 12</div><div class="stat-label">Tokens / sec — Ollama Q4 (CPU)</div></div>
+          <div class="stat-card teal"><div class="stat-num">~ 0.6</div><div class="stat-label">Tokens / sec — Transformers BF16 (CPU)</div></div>
+          <div class="stat-card gold"><div class="stat-num">~ 50K</div><div class="stat-label">Practical context window — E4B</div></div>
+        </div>
+        <div class="stat-card sky"><div class="stat-num">Tool-use suite</div><div class="stat-label">weather API, filesystem ops, structured extraction, chained reasoning, and retry handling.</div></div>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Capability</th>
+              <th>Headline Result</th>
+              <th>Latency Profile</th>
+              <th>Verdict</th>
+              <th>Confidence</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Local inference (Ollama, Q4 quantized)</td>
+              <td>9 – 12 tok/s output, ~6 to 8 GB RAM, warm start ~6 sec</td>
+              <td>Interactive — usable for chat and coding</td>
+              <td><span class="badge green">Green</span></td>
+              <td><span class="badge green">High</span></td>
+            </tr>
+            <tr>
+              <td>Coding assistance via VS Code (Continue)</td>
+              <td>Strong on explanation and refactoring; weaker on generation</td>
+              <td>Seconds per response</td>
+              <td><span class="badge green">Green</span></td>
+              <td><span class="badge green">High</span></td>
+            </tr>
+            <tr>
+              <td>Agentic tool calling</td>
+              <td>5 of 5 tasks, parallel calls and graceful error handling</td>
+              <td>~ 9 minutes for the full suite</td>
+              <td><span class="badge green">Green</span></td>
+              <td><span class="badge green">High</span></td>
+            </tr>
+            <tr>
+              <td>Multilingual output (5 languages)</td>
+              <td>4.7 to 5.0 / 5 across English, French, Portuguese, German, Spanish</td>
+              <td>5 to 13 sec average</td>
+              <td><span class="badge green">Green</span></td>
+              <td><span class="badge green">High</span></td>
+            </tr>
+            <tr>
+              <td>Thinking mode</td>
+              <td>Richer reasoning, but ~4 to 7x slower than thinking off</td>
+              <td>Minutes per response</td>
+              <td><span class="badge amber">Amber</span></td>
+              <td><span class="badge amber">Medium</span></td>
+            </tr>
+            <tr>
+              <td>Long context — 50K tokens</td>
+              <td>Reliable targeted retrieval under controlled tests</td>
+              <td>~ 44 to 60 seconds per call (GPU) — up to 60 min on CPU</td>
+              <td><span class="badge amber">Amber</span></td>
+              <td><span class="badge amber">Medium</span></td>
+            </tr>
+            <tr>
+              <td>Long context — 100K tokens</td>
+              <td>Requires Gemma 4 31B and 19+ GB VRAM; most tasks time out</td>
+              <td>9+ minutes per call</td>
+              <td><span class="badge red">Red</span></td>
+              <td><span class="badge red">Low</span></td>
+            </tr>
+            <tr>
+              <td>QLoRA fine-tuning on RTX 3060 (12 GB)</td>
+              <td>Trains end-to-end; measurable gain on a medical-QA dataset</td>
+              <td>Smoke run minutes; full run hours</td>
+              <td><span class="badge amber">Amber</span></td>
+              <td><span class="badge amber">Medium</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="slide-num">10</div>
+    </section>
+
+    <!-- ============ SLIDE 11 — GEMMA IMPACT & RECOMMENDATION ============ -->
+    <section class="slide dark" id="s11">
+      <div class="topbar"></div>
+      <div class="brand-stamp">Aditi <span>Consulting</span></div>
+      <div class="slide-pad">
+        <div class="slide-eyebrow">Spotlight · Recent Cross-Team Exercise — 3 of 3</div>
+        <h2 class="slide-title">Gemma 4 Local POC — <span>impact and recommendation</span></h2>
+        <p class="slide-lead">
+          The exercise is a small but real example of what this community is for: a shared question, run in parallel by engineers across stacks, with the findings consolidated into one reusable view.
+        </p>
+
+        <div class="recos">
+          <div class="reco go">
+            <div class="reco-tag">Recommendation 01 — GO</div>
+            <div class="reco-title">Phase 2 controlled expansion</div>
+            <div class="reco-body">
+              Stand up a benchmarking framework with quantitative KPIs (factual accuracy &gt; 95%, hallucination &lt; 3%, JSON validity &gt; 98%, tool success &gt; 99%, latency p95 &lt; 5 sec). Move the workload onto GPU-backed environments with at least 16 GB of VRAM.
+            </div>
+          </div>
+          <div class="reco hold">
+            <div class="reco-tag">Recommendation 02 — HOLD</div>
+            <div class="reco-title">Position as developer copilot, not autonomous agent</div>
+            <div class="reco-body">
+              Gemma 4 local is a strong support tool for explanation, refactoring, structured generation, and agentic workflows. It is not yet a reliable autonomous code generator. Pair every output with human review until benchmarks say otherwise.
+            </div>
+          </div>
+          <div class="reco nogo">
+            <div class="reco-tag">Recommendation 03 — NO-GO</div>
+            <div class="reco-title">Production deployment at current maturity</div>
+            <div class="reco-body">
+              Production use is blocked until we have hallucination benchmarks, regression suites, throughput and load tests, security validation, and a privacy review. None of these exist today.
+            </div>
+          </div>
+        </div>
+
+        <div class="cost-card">
+          <div class="reco-tag" style="white-space:nowrap;padding-top:2px;">Cost Insight</div>
+          <div class="cost-card-body">
+            <div class="cost-card-subtitle">Estimated 60–80% lower operational cost vs external API-heavy workflows.</div>
+            <div class="cost-mini-grid">
+              <div class="cm-head">Deployment Mode</div>
+              <div class="cm-head">Estimated Cost</div>
+              <div class="cm-cell">Local CPU</div>
+              <div class="cm-cell low">Low</div>
+              <div class="cm-cell">Consumer GPU</div>
+              <div class="cm-cell med">Medium</div>
+              <div class="cm-cell cm-last">Cloud GPU</div>
+              <div class="cm-cell high cm-last">High</div>
+            </div>
+          </div>
+        </div>
+
+        <p class="slide-lead" style="margin-top: 18px;">
+          <strong>Community impact.</strong> In four weeks, seven engineers produced what would have taken one engineer four months alone. The findings are a ready-made client conversation: full data privacy, no external API dependency, lower operational cost, with a clearly scoped path to a benchmarked production-ready stage. <strong>This is the muscle the Backend Community is here to build — every quarter.</strong>
+        </p>
+      </div>
+      <div class="slide-num">11</div>
+    </section>
+
+    <!-- ============ SLIDE 12 — OKRs ============ -->
+    <section class="slide light" id="s12">
+      <div class="topbar"></div>
+      <div class="brand-stamp">Aditi <span>Consulting</span></div>
+      <div class="slide-pad">
+        <div class="slide-eyebrow">How We Measure Success</div>
+        <h2 class="slide-title">Year-1 OKRs</h2>
+        <p class="slide-lead">Four objectives, each with measurable key results. We will publish health metrics at the end of every phase, openly, in the community channels.</p>
+        <div class="okr-grid">
+          <div class="okr-card">
+            <div class="okr-objective">Objective 01 — Establish a vibrant and active community</div>
+            <ul class="kr-list">
+              <li class="kr-row"><span>Increase backend engineers enrolled</span><span class="kr-target"></span></li>
+              <li class="kr-row"><span>Increase monthly active participation</span><span class="kr-target"></span></li>
+              <li class="kr-row"><span>Increase Community NPS at year end</span><span class="kr-target"></span></li>
+            </ul>
+          </div>
+          <div class="okr-card o2">
+            <div class="okr-objective">Objective 02 — Drive technical cohesion and standards</div>
+            <ul class="kr-list">
+              <li class="kr-row"><span>Cross-stack standards ratified</span><span class="kr-target"></span></li>
+              <li class="kr-row"><span>Backend teams adopting standards</span><span class="kr-target"></span></li>
+              <li class="kr-row"><span>Inner-source PRs merged</span><span class="kr-target"></span></li>
+            </ul>
+          </div>
+          <div class="okr-card o3">
+            <div class="okr-objective">Objective 03 — Accelerate knowledge growth</div>
+            <ul class="kr-list">
+              <li class="kr-row"><span>Content pieces produced</span><span class="kr-target"></span></li>
+              <li class="kr-row"><span>Mentoring pairs completed</span><span class="kr-target"></span></li>
+              <li class="kr-row"><span>First-time speakers</span><span class="kr-target"></span></li>
+            </ul>
+          </div>
+          <div class="okr-card o4">
+            <div class="okr-objective">Objective 04 — Demonstrate client and business impact</div>
+            <ul class="kr-list">
+              <li class="kr-row"><span>PoCs leading to productized features</span><span class="kr-target"></span></li>
+              <li class="kr-row"><span>Documented performance wins</span><span class="kr-target"></span></li>
+              <li class="kr-row"><span>Repeated architecture questions</span><span class="kr-target"></span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="slide-num">12</div>
+    </section>
+
+    <!-- ============ SLIDE 13 — RECOGNITION & WIIFY ============ -->
+    <section class="slide dark" id="s13">
+      <div class="topbar"></div>
+      <div class="brand-stamp">Aditi <span>Consulting</span></div>
+      <div class="slide-pad">
+        <div class="slide-eyebrow">What's In It For You</div>
+        <h2 class="slide-title">Recognition, growth, and <span>visible impact</span></h2>
+        <p class="slide-lead">Every contribution is tracked, attributed, and recognized — at the team level, at the engineering all-hands, and through the year-end Recognition Program.</p>
+        <div class="pillar-grid">
+          <div class="pillar">
+            <div class="pillar-label">Award 01</div>
+            <div class="pillar-title">Impact</div>
+            <div class="pillar-body">Biggest client-facing improvement that can be traced back to community knowledge sharing or a community-driven pattern.</div>
+          </div>
+          <div class="pillar p2">
+            <div class="pillar-label">Award 02</div>
+            <div class="pillar-title">Educator</div>
+            <div class="pillar-body">Most valuable content contributor across the year — talks, articles, TILs, RFCs, and recordings combined.</div>
+          </div>
+          <div class="pillar p3">
+            <div class="pillar-label">Award 03</div>
+            <div class="pillar-title">Bridge Builder</div>
+            <div class="pillar-body">Best cross-stack collaboration demonstrated in the community, an RFC, an inner-source contribution, or a shared deliverable.</div>
+          </div>
+        </div>
+        <p class="slide-lead" style="margin-top: 18px;">
+          A fourth award — <strong>Rising Contributor</strong> — recognises the most improved engagement from a newer member. We want this community to be the fastest path from "new joiner" to "trusted voice."
+        </p>
+      </div>
+      <div class="slide-num">13</div>
+    </section>
+
+    <!-- ============ SLIDE 14 — CTA ============ -->
+    <section class="slide dark" id="s14">
+      <div class="topbar"></div>
+      <div class="brand-stamp">Aditi <span>Consulting</span></div>
+      <div class="slide-pad">
+        <div class="slide-eyebrow">Next Week</div>
+        <h2 class="slide-title cta-headline">Three things to do <span>before next Friday</span></h2>
+        <p class="cta-sub">The kick-off only matters if it converts into a habit. Here is the smallest possible commitment that gets the community off the ground.</p>
+        <div class="cta-actions">
+          <div class="cta-action">
+            <div class="cta-step">Step 01 · Today</div>
+            <div class="cta-action-title">Join the channels</div>
+            <div class="cta-action-body">#backend-community is the front door. Add the chapter channel for your stack and #backend-xstack for the cross-stack conversation.</div>
+          </div>
+          <div class="cta-action a2">
+            <div class="cta-step">Step 02 · Next week</div>
+            <div class="cta-action-title">Take the baseline survey</div>
+            <div class="cta-action-body">10 minutes form. Your answers shape the topics, interests and incoming activities in the community.</div>
+          </div>
+          <div class="cta-action a3">
+            <div class="cta-step">Step 03 · Before June 30</div>
+            <div class="cta-action-title">Show up at your first chapter meeting</div>
+            <div class="cta-action-body">Bring one question, one pattern, or one half-built thing you'd like feedback on.</div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-num">14</div>
+    </section>
+
+    <!-- ============ SLIDE 15 — Q&A / CLOSING ============ -->
+    <section class="slide dark" id="s15">
+      <div class="topbar"></div>
+      <div class="brand-stamp">Aditi <span>Consulting</span></div>
+      <div class="slide-pad" style="justify-content: center;">
+        <div class="slide-eyebrow">Open Mic</div>
+        <h1 class="cta-headline">Questions, ideas, <span>volunteers wanted</span></h1>
+        <p class="cta-sub">
+          The best version of this community is the one we build together. If something on the roadmap looks wrong, missing, or overly ambitious, the next ten minutes are exactly when to say so.
+        </p>
+        <div class="closing-stamp">Aditi <span>Consulting</span> — Backend Engineers Community</div>
+        <div class="closing-meta">Kick-off Event · June 5, 2026 · Recording, slides, and the baseline survey will be posted in #backend-community within 24 hours.</div>
+      </div>
+      <div class="slide-num">15</div>
+    </section>
+
+  </div>
+</div>
+
+<!-- CONTROLS -->
+<div class="controls">
+  <button class="ctrl-btn" id="prevBtn" aria-label="Previous slide">&#8592;</button>
+  <div class="ctrl-counter"><span id="cur">1</span> / <span id="tot">15</span></div>
+  <button class="ctrl-btn" id="nextBtn" aria-label="Next slide">&#8594;</button>
+</div>
+
+<script>
+  (function () {
+    var slides = document.querySelectorAll('.slide');
+    var idx = 0;
+    var total = slides.length;
+    document.getElementById('tot').textContent = total;
+
+    function show(i) {
+      idx = (i + total) % total;
+      slides.forEach(function (s, n) { s.classList.toggle('active', n === idx); });
+      document.getElementById('cur').textContent = idx + 1;
+    }
+    function next() { show(idx + 1); }
+    function prev() { show(idx - 1); }
+
+    document.getElementById('nextBtn').addEventListener('click', next);
+    document.getElementById('prevBtn').addEventListener('click', prev);
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { next(); e.preventDefault(); }
+      else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { prev(); e.preventDefault(); }
+      else if (e.key === 'Home') { show(0); }
+      else if (e.key === 'End') { show(total - 1); }
+    });
+
+    // simple swipe support
+    var sx = null;
+    document.addEventListener('touchstart', function (e) { sx = e.changedTouches[0].clientX; });
+    document.addEventListener('touchend', function (e) {
+      if (sx === null) return;
+      var dx = e.changedTouches[0].clientX - sx;
+      if (Math.abs(dx) > 60) (dx < 0 ? next : prev)();
+      sx = null;
+    });
+
+    // fade hint after a few seconds
+    setTimeout(function () {
+      var h = document.getElementById('hint'); if (h) h.classList.add('fade');
+    }, 5000);
+  })();
+</script>
+
+</body>
+</html>
